@@ -49,7 +49,7 @@ class Products with ChangeNotifier {
   }
 
   Product findById(String id) {
-    return _items.firstWhere((product) => product.id == id);
+    return _items.firstWhere((prod) => prod.id == id);
   }
 
   // void showFavoritesOnly() {
@@ -72,5 +72,15 @@ class Products with ChangeNotifier {
     _items.add(newProdect);
     // _items.insert(0, newProdect);
     notifyListeners();
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print(".......");
+    }
   }
 }
