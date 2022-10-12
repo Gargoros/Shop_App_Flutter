@@ -64,30 +64,32 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     final url = Uri.https(
         "myshopappdata-default-rtdb.firebaseio.com", "/products.json");
-    return http
-        .post(url,
-            body: json.encode({
-              "title": product.title,
-              "description": product.description,
-              "price": product.price,
-              "imageUrl": product.imageUrl,
-              "isFavorite": product.isFavorite,
-            }))
-        .then((responce) {
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            "title": product.title,
+            "description": product.description,
+            "price": product.price,
+            "imageUrl": product.imageUrl,
+            "isFavorite": product.isFavorite,
+          }));
       final newProdect = Product(
         title: product.title,
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
-        id: json.decode(responce.body)["name"],
+        id: json.decode(response.body)["name"],
       );
       _items.add(newProdect);
       // _items.insert(0, newProdect);
       notifyListeners();
-    });
+    } catch (error) {
+      print(error);
+      throw error;
+    }
   }
 
   void updateProduct(String id, Product newProduct) {
