@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:provider/provider.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
                 .copyWith(primary: Colors.purple, secondary: Colors.deepOrange),
             fontFamily: 'Lato',
             textTheme: TextTheme(titleLarge: TextStyle(color: Colors.white))),
-        home: ProductsOverviewScreen(),
+        home: AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
           CartScreen.routeName: (context) => CartScreen(),
