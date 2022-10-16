@@ -7,7 +7,6 @@ class UserProductItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
-  // final Function deleteHandler;
 
   const UserProductItem(
     this.title,
