@@ -21,10 +21,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   void initState() {
-    //
-    // Future.delayed(Duration.zero).then((_) {
-    //   Provider.of<Products>(context, listen: false).fetchAndSetProducts();
-    // });
     super.initState();
   }
 
@@ -49,7 +45,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final productsContainer = Provider.of<Products>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text("MyShop"),
@@ -59,10 +54,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 setState(() {
                   if (selectedValue == FilterOptions.Favorites) {
                     _showOnlyFavorites = true;
-                    //productsContainer.showFavoritesOnly();
                   } else {
                     _showOnlyFavorites = false;
-                    //productsContainer.showAll();
                   }
                 });
               },
