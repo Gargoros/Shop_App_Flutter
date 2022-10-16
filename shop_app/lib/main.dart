@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
           create: (context) => Orders(),
         ),
       ],
-      //create: (context) => Products(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'MyShop',
