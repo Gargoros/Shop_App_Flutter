@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
+import 'package:flutter_complete_guide/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
@@ -19,8 +20,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => Auth()),
-          ChangeNotifierProvider(
-            create: (context) => Products(),
+          ChangeNotifierProxyProvider<Auth, Products>(
+            create: (_) => Products('', []),
+            update: (context, auth, previousProducts) => Products(auth.token,
+                previousProducts == null ? [] : previousProducts.items),
           ),
           ChangeNotifierProvider(
             create: (context) => Cart(),
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'Lato',
                 textTheme:
                     TextTheme(titleLarge: TextStyle(color: Colors.white))),
-            home: auth.isAuth ? ProductDetailScreen() : AuthScreen(),
+            home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
             routes: {
               ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
               CartScreen.routeName: (context) => CartScreen(),
