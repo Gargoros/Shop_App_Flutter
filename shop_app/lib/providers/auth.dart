@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import '../models/http_exception.dart';
+//"https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyA1WJi7syZuFSqR2p34L3WPCAQhgEhkYyo");
 
 class Auth with ChangeNotifier {
   String _token;
@@ -19,6 +20,10 @@ class Auth with ChangeNotifier {
       return _token;
     }
     return null;
+  }
+
+  String get userId {
+    return _userId;
   }
 
   Future<void> _authenticate(
