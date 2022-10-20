@@ -5,6 +5,10 @@ import '../models/http_exception.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   List<Product> _items = [];
 
   List<Product> get items {
@@ -16,12 +20,12 @@ class Products with ChangeNotifier {
   }
 
   Product findById(String id) {
-    return _items.firstWhere((prod) => prod.id == id);
+    return _items.firstWhere((prod) => prod.id == id, orElse: () => null);
   }
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        "https://myshopappdata-default-rtdb.firebaseio.com/products.json");
+        "https://myshopappdata-default-rtdb.firebaseio.com/products.json?auth=$authToken");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
