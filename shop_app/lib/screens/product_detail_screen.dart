@@ -4,10 +4,6 @@ import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  // final String title;
-  // final double price;
-  // ProductDetailScreen(this.title, this.price);
-
   static const routeName = "product-detail";
 
   @override
