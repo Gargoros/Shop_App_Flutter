@@ -24,9 +24,12 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  final String authToken;
+  Orders(this.authToken, this._orders);
+
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
-    final url =
-        Uri.https("myshopappdata-default-rtdb.firebaseio.com", "/orders.json");
+    final url = Uri.https("myshopappdata-default-rtdb.firebaseio.com",
+        "/orders.json", {"auth": "$authToken"});
     final timestamp = DateTime.now();
 
     try {
@@ -53,13 +56,13 @@ class Orders with ChangeNotifier {
               dateTime: timestamp));
       notifyListeners();
     } catch (error) {
-      throw (error);
+      throw error.toString();
     }
   }
 
   Future<void> fetchAndSetOrder() async {
     final url = Uri.parse(
-        "https://myshopappdata-default-rtdb.firebaseio.com/orders.json");
+        "https://myshopappdata-default-rtdb.firebaseio.com/orders.json?auth=$authToken");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -84,7 +87,7 @@ class Orders with ChangeNotifier {
       _orders = loadedOrder.reversed.toList();
       notifyListeners();
     } catch (error) {
-      throw (error);
+      throw error.toString();
     }
   }
 }
