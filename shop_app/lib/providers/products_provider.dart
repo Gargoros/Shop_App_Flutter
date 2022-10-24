@@ -21,12 +21,16 @@ class Products with ChangeNotifier {
   }
 
   Product findById(String id) {
-    return _items.firstWhere((prod) => prod.id == id, orElse: () => null);
+    return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    var url = Uri.parse(
-        "https://myshopappdata-default-rtdb.firebaseio.com/products.json?auth=$authToken");
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final _params = filterByUser ? "orderBy=creatorId&equalTo='$userId'" : "";
+    var url = Uri.https(
+        "myshopappdata-default-rtdb.firebaseio.com", "/products.json?$_params");
+
+    // var url = Uri.parse(
+    //     "https://myshopappdata-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -70,6 +74,7 @@ class Products with ChangeNotifier {
             "description": product.description,
             "price": product.price,
             "imageUrl": product.imageUrl,
+            "creatorId": userId
           }));
       final newProdect = Product(
         title: product.title,
