@@ -27,15 +27,15 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final _params = {
       'auth': authToken,
-      'orderBy': '"creatorId"',
-      'equalTo': '"$userId"',
+      'orderBy': json.encode("creatorId"),
+      'equalTo': json.encode(userId),
     };
     var url = Uri.https(
       "myshopappdata-default-rtdb.firebaseio.com",
       "/products.json",
       {
         'auth': authToken,
-        'orderBy': json.encode('creatorId'),
+        'orderBy': json.encode("creatorId"),
         'equalTo': json.encode(userId),
       },
     );
