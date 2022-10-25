@@ -25,9 +25,23 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final _params = filterByUser ? "orderBy=creatorId&equalTo='$userId'" : "";
+    final _params = {
+      'auth': authToken,
+      'orderBy': '"creatorId"',
+      'equalTo': '"$userId"',
+    };
     var url = Uri.https(
-        "myshopappdata-default-rtdb.firebaseio.com", "/products.json?$_params");
+      "myshopappdata-default-rtdb.firebaseio.com",
+      "/products.json",
+      {
+        'auth': authToken,
+        'orderBy': json.encode('creatorId'),
+        'equalTo': json.encode(userId),
+      },
+    );
+
+    // final filterString =
+    //     filterByUser ? "orderBy='creatorId'&equalTo='$userId'" : "";
 
     // var url = Uri.parse(
     //     "https://myshopappdata-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString");
@@ -47,6 +61,12 @@ class Products with ChangeNotifier {
 
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
+        // bool isFavorite = false;
+        // if (favoriteData != null) {
+        //   if (favoriteData.containsKey(prodId)) {
+        //     isFavorite = favoriteData[prodId]['isFavorite'];
+        //   }
+        // }
         loadedProducts.add(Product(
           id: prodId,
           title: prodData["title"],
