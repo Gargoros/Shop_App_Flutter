@@ -15,6 +15,7 @@ class UserProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('rebuilning');
     // final productsData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +31,7 @@ class UserProductsScreen extends StatelessWidget {
       drawer: AppDrawer(),
       body: FutureBuilder(
           future: _refreshProducts(context),
-          builder: ((context, snapshot) =>
+          builder: (context, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -38,7 +39,8 @@ class UserProductsScreen extends StatelessWidget {
                   : RefreshIndicator(
                       onRefresh: () => _refreshProducts(context),
                       child: Consumer<Products>(
-                        builder: (context, productsData, _) => Padding(
+                        builder: (ctx, productsData, _) => Padding(
+                          padding: EdgeInsets.all(8),
                           child: ListView.builder(
                               itemCount: productsData.items.length,
                               itemBuilder: (_, index) => Column(
@@ -50,10 +52,9 @@ class UserProductsScreen extends StatelessWidget {
                                       Divider(),
                                     ],
                                   )),
-                          padding: EdgeInsets.all(8),
                         ),
                       ),
-                    ))),
+                    )),
     );
   }
 }
