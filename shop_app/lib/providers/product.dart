@@ -11,16 +11,17 @@ class Product with ChangeNotifier {
   final String imageUrl;
   bool isFavorite;
 
-  Product(
-      {@required this.id,
-      @required this.title,
-      @required this.description,
-      @required this.price,
-      @required this.imageUrl,
-      this.isFavorite = false});
+  Product({
+    @required this.id,
+    @required this.title,
+    @required this.description,
+    @required this.price,
+    @required this.imageUrl,
+    this.isFavorite = false,
+  });
 
   void _setFavValue(bool newValue) {
-    isFavorite == newValue;
+    isFavorite = newValue;
     notifyListeners();
   }
 
@@ -30,14 +31,16 @@ class Product with ChangeNotifier {
     notifyListeners();
     final url = Uri.https("myshopappdata-default-rtdb.firebaseio.com",
         "/userFavorites/$userId/$id.json", {"auth": "$token"});
+
     try {
-      final response = await http.put(url,
-          body: json.encode({
-            '$id': isFavorite.toString(),
-          }));
+      final response = await http.put(
+        url,
+        body: json.encode(
+          isFavorite,
+        ),
+      );
       if (response.statusCode >= 400) {
         _setFavValue(oldStatus);
-        notifyListeners();
       }
     } catch (error) {
       _setFavValue(oldStatus);
