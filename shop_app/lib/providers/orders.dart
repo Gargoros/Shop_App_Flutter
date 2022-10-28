@@ -94,7 +94,7 @@ class Orders with ChangeNotifier {
       _orders = loadedOrder.reversed.toList();
       notifyListeners();
     } catch (error) {
-      throw error.toString();
+      throw error;
     }
   }
 }
