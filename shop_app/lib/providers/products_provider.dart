@@ -25,19 +25,24 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final _params = {
-      'auth': authToken,
-      'orderBy': json.encode("creatorId"),
-      'equalTo': json.encode(userId),
-    };
-    var url = Uri.https(
-      "myshopappdata-default-rtdb.firebaseio.com",
-      "/products.json",
-      {
+    var params;
+
+    if (filterByUser) {
+      params = {
+        'auth': authToken,
+      };
+    } else {
+      params = {
         'auth': authToken,
         'orderBy': json.encode("creatorId"),
         'equalTo': json.encode(userId),
-      },
+      };
+    }
+
+    var url = Uri.https(
+      "myshopappdata-default-rtdb.firebaseio.com",
+      "/products.json",
+      params,
     );
 
     // final filterString =
@@ -54,27 +59,26 @@ class Products with ChangeNotifier {
       }
 
       url = Uri.https("myshopappdata-default-rtdb.firebaseio.com",
-          "/userFavorites/$userId.json", {"auth": "$authToken"});
+          "/userFavorites/$userId.json", params);
       final favoriteResponse = await http.get(url);
       final favoriteData =
           json.decode(favoriteResponse.body) as Map<String, dynamic>;
 
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        // bool isFavorite = false;
-        // if (favoriteData != null) {
-        //   if (favoriteData.containsKey(prodId)) {
-        //     isFavorite = favoriteData[prodId]['isFavorite'];
-        //   }
-        // }
+        bool isFavorite = false;
+        if (favoriteData != null) {
+          if (favoriteData.containsKey(prodId)) {
+            isFavorite = favoriteData[prodId]['isFavorite'];
+          }
+        }
         loadedProducts.add(Product(
           id: prodId,
           title: prodData["title"],
           description: prodData["description"],
           price: prodData["price"],
           imageUrl: prodData["imageUrl"],
-          isFavorite:
-              favoriteData == null ? false : favoriteData[prodId] ?? false,
+          isFavorite: isFavorite,
         ));
       });
       _items = loadedProducts;
